@@ -253,7 +253,12 @@ const finesRef = db.collection("fines");
 const gamesRef = db.collection("config").doc("games");
 const auditRef = db.collection("audit");
 
-const ADMIN_PW = "UnluckyJoey1!";
+const ADMIN_PW_HASH = "2e4698ff7b97c6fbc94a2d65bd520ee0d1c4325281ea8f95c86419d29e6e516c";
+
+async function hashPw(pw){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
 let isAdmin = false;
 let fineLog = [];
 let auditLog = [];
@@ -338,8 +343,9 @@ const seed = [
 ];
 
 // ===== AUTH =====
-function tryLogin(){
-  if(document.getElementById('pw-input').value===ADMIN_PW){isAdmin=true;closeModal();updateRoleUI()}
+async function tryLogin(){
+  const h=await hashPw(document.getElementById('pw-input').value);
+  if(h===ADMIN_PW_HASH){isAdmin=true;closeModal();updateRoleUI()}
   else{document.getElementById('pw-err').textContent="Wrong password. Try again.";document.getElementById('pw-input').value='';document.getElementById('pw-input').focus()}
 }
 function enterViewer(){isAdmin=false;closeModal();updateRoleUI()}
