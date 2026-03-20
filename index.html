@@ -253,7 +253,7 @@ const finesRef = db.collection("fines");
 const gamesRef = db.collection("config").doc("games");
 const auditRef = db.collection("audit");
 
-const ADMIN_PW_HASH = "2e4698ff7b97c6fbc94a2d65bd520ee0d1c4325281ea8f95c86419d29e6e516c";
+const ADMIN_PW_HASH = "8f549a0d4c13d847ec2a9449593b4d3c1a5004350d6576ad2867f1cdb1a83bcf";
 
 async function hashPw(pw){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
