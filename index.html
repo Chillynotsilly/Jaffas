@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lambton Jaffas ZL2 — 2026 Fines Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#D4A843;--gb:#F0C75E;--gd:#A67C2E;--blk:#0D0D0D;--dk:#151515;--card:#1C1C1C;--ch:#262626;--txt:#F0EDE8;--dim:#8A8580;--grn:#5CBF6E;--red:#E05A4F;--bdr:rgba(212,168,67,0.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Source Sans 3',sans-serif;background:var(--blk);color:var(--txt);min-height:100vh;overflow-x:hidden}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity .3s}
+  .modal-overlay.show{opacity:1}
+  .modal-overlay.hide{display:none}
+  .modal{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:2.5rem 2rem;max-width:380px;width:100%;text-align:center}
+  .modal h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:2px;color:var(--gb);font-size:1.3rem;margin-bottom:.3rem}
+  .modal p{font-size:.85rem;color:var(--dim);margin-bottom:1.5rem;line-height:1.4}
+  .modal input{font-family:'Source Sans 3',sans-serif;font-size:1rem;padding:.8rem 1rem;background:var(--blk);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);outline:none;width:100%;text-align:center;letter-spacing:2px;margin-bottom:.8rem;transition:border .2s}
+  .modal input:focus{border-color:var(--gold)}
+  .modal-btn{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:.7rem 2rem;border:none;border-radius:8px;cursor:pointer;font-size:.9rem;width:100%;transition:transform .1s,box-shadow .2s;margin-bottom:.5rem}
+  .modal-btn.primary{background:linear-gradient(135deg,var(--gold),var(--gd));color:var(--blk);box-shadow:0 2px 8px rgba(212,168,67,0.2)}
+  .modal-btn.primary:hover{box-shadow:0 4px 16px rgba(212,168,67,0.35)}
+  .modal-btn.secondary{background:transparent;color:var(--dim);border:1px solid var(--bdr)}
+  .modal-btn.secondary:hover{color:var(--txt);border-color:var(--gold)}
+  .modal-err{font-size:.8rem;color:var(--red);margin-bottom:.5rem;min-height:1.2rem}
+  .modal-logo{width:60px;height:60px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(212,168,67,0.3));margin-bottom:.8rem}
+
+  /* ROLE BADGE */
+  .role-bar{display:flex;justify-content:flex-end;align-items:center;gap:.6rem;padding:.5rem 1.5rem;background:var(--dk);border-bottom:1px solid var(--bdr);font-size:.75rem}
+  .role-badge{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:.25rem .7rem;border-radius:12px;font-size:.7rem}
+  .role-badge.admin{background:var(--gold);color:var(--blk)}
+  .role-badge.viewer{background:rgba(212,168,67,0.1);color:var(--dim)}
+  .role-switch{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.75rem;font-family:'Source Sans 3',sans-serif;text-decoration:underline;transition:color .2s}
+  .role-switch:hover{color:var(--gb)}
+
+  /* HERO */
+  .hero{background:linear-gradient(170deg,#0D0D0D 0%,#1A150A 40%,#0D0D0D 100%);padding:2rem 1.5rem 1.6rem;text-align:center;border-bottom:3px solid var(--gold);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80%;left:10%;width:80%;height:250%;background:radial-gradient(ellipse at center,rgba(212,168,67,0.06) 0%,transparent 55%);pointer-events:none}
+  .hero-badge{display:inline-flex;align-items:center;gap:1.2rem;position:relative;z-index:2}
+  .club-logo{width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(212,168,67,0.3))}
+  .hero-text h1{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,5vw,2.6rem);font-weight:700;text-transform:uppercase;letter-spacing:2px;line-height:1.05}
+  .hero-text h1 span{color:var(--gb)}
+  .hero-text .sub{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--dim);margin-top:2px}
+  .hero-text .motto{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gd);margin-top:4px;font-style:italic}
+
+  /* TABS */
+  .tabs{display:flex;justify-content:center;background:var(--dk);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--bdr)}
+  .tab-btn{font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;padding:.9rem 1.6rem;background:none;border:none;color:var(--dim);cursor:pointer;border-bottom:3px solid transparent;transition:color .2s}
+  .tab-btn:hover{color:var(--txt)}
+  .tab-btn.active{color:var(--gb);border-bottom-color:var(--gold)}
+  .tab-panel{display:none}.tab-panel.active{display:block}
+  .con{max-width:800px;margin:0 auto;padding:1.5rem}
+
+  .sec{font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);padding:1.4rem 0 .5rem;display:flex;align-items:center;gap:.7rem}
+  .sec::after{content:'';flex:1;height:1px;background:var(--bdr)}
+
+  .f-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:.8rem 1rem;margin:.2rem 0;border-radius:8px;transition:background .15s}
+  .f-row:hover{background:var(--ch)}
+  .f-name{font-weight:600;font-size:.95rem;line-height:1.3}
+  .f-note{font-size:.78rem;color:var(--dim);margin-top:2px;line-height:1.35}
+  .f-amt{font-family:'Oswald',sans-serif;font-weight:700;font-size:1.05rem;color:var(--gb);white-space:nowrap;text-align:right}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-bottom:1.5rem}
+  .stat{background:var(--card);border-radius:10px;padding:1.1rem;text-align:center;border:1px solid var(--bdr)}
+  .stat-v{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;color:var(--gb)}
+  .stat-l{font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-top:2px}
+
+  .form-grid{display:grid;gap:.5rem;margin-bottom:.5rem}
+  .r2{grid-template-columns:1fr 1fr}
+  .r3{grid-template-columns:100px 1fr}
+  .form-act{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:stretch}
+  input,select{font-family:'Source Sans 3',sans-serif;font-size:.9rem;padding:.65rem .9rem;background:var(--card);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);outline:none;transition:border .2s;width:100%}
+  input:focus,select:focus{border-color:var(--gold)}
+  select option{background:var(--card);color:var(--txt)}
+
+  .btn{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:.65rem 1.2rem;background:linear-gradient(135deg,var(--gold),var(--gd));color:var(--blk);border:none;border-radius:8px;cursor:pointer;font-size:.85rem;white-space:nowrap;transition:box-shadow .2s}
+  .btn:hover{box-shadow:0 4px 16px rgba(212,168,67,0.35)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+  .btn-sm{font-size:.75rem;padding:.45rem .9rem;border-radius:6px}
+  .btn-outline{background:transparent;border:1px solid var(--bdr);color:var(--dim)}
+  .btn-outline:hover{border-color:var(--gold);color:var(--txt);box-shadow:none}
+
+  .tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1rem}
+  .tag{font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:.4rem .9rem;border-radius:20px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s}
+  .tag:hover{border-color:var(--gd);color:var(--txt)}
+  .tag.on{background:var(--gold);color:var(--blk);border-color:var(--gold)}
+
+  .lb{margin-top:.5rem}
+  .lb-i{display:grid;grid-template-columns:2.2rem 1fr auto auto;align-items:center;gap:.7rem;padding:.85rem 1rem;margin:.3rem 0;background:var(--card);border-radius:10px;border:1px solid transparent;transition:border .2s,background .2s}
+  .lb-i:hover{border-color:var(--bdr);background:var(--ch)}
+  .lb-r{font-family:'Oswald',sans-serif;font-weight:700;font-size:1.1rem;text-align:center;color:var(--dim)}
+  .lb-i:nth-child(1) .lb-r{color:var(--gb)}
+  .lb-i:nth-child(2) .lb-r{color:#BDC3C7}
+  .lb-i:nth-child(3) .lb-r{color:#CD7F32}
+  .lb-n{font-weight:600;font-size:.95rem}.lb-c{font-size:.8rem;color:var(--dim)}
+  .lb-t{font-family:'Oswald',sans-serif;font-weight:700;font-size:1.15rem;color:var(--gb)}
+
+  .log-gh{font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gd);padding:.8rem 1rem .3rem}
+  .log-e{display:grid;grid-template-columns:1fr auto auto;align-items:start;gap:.7rem;padding:.6rem 1rem;margin:.1rem 0;border-radius:8px;font-size:.86rem;transition:background .15s}
+  .log-e:hover{background:rgba(212,168,67,0.04)}
+  .log-p{font-weight:600}.log-f{color:var(--dim);font-size:.82rem}
+  .log-cmt{font-size:.78rem;color:var(--gd);margin-top:3px;font-style:italic;line-height:1.3}
+  .log-a{font-family:'Oswald',sans-serif;font-weight:600;color:var(--gb);white-space:nowrap}
+  .log-x{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.9rem;padding:2px;border-radius:4px;transition:color .15s}
+  .log-x:hover{color:var(--red)}
+
+  .empty{text-align:center;padding:2.5rem 1rem;color:var(--dim)}
+  .empty .ico{font-size:2.2rem;margin-bottom:.6rem}
+
+  .coin-wrap{text-align:center;margin-top:1.5rem;padding:2.5rem 1.5rem;background:var(--card);border-radius:14px;border:1px solid var(--bdr)}
+  .coin-wrap h3{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;color:var(--gb);font-size:1.2rem}
+  .coin-wrap p{font-size:.85rem;color:var(--dim);margin:.4rem 0 1.5rem}
+  .coin{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f7d794,#D4A843 55%,#A67C2E);box-shadow:0 4px 20px rgba(212,168,67,0.3),inset 0 -4px 10px rgba(0,0,0,0.25),inset 0 2px 4px rgba(255,255,255,0.15);display:inline-flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:#6B4E0A;cursor:pointer;transition:transform .1s;user-select:none}
+  .coin:hover{transform:scale(1.06)}
+  .coin.flip{animation:cf .8s ease-out}
+  @keyframes cf{0%{transform:rotateY(0) scale(1)}50%{transform:rotateY(540deg) scale(1.15)}100%{transform:rotateY(1080deg) scale(1)}}
+  .c-res{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;min-height:2rem;margin-top:.8rem}
+  .c-res.win{color:var(--grn)}.c-res.lose{color:var(--red)}
+
+  .add-round{display:flex;gap:.5rem;align-items:center;margin-bottom:1rem}
+  .add-round input{flex:1}
+
+  .viewer-msg{background:rgba(212,168,67,0.06);border:1px solid var(--bdr);border-radius:10px;padding:1.2rem;text-align:center;margin-bottom:1.5rem;font-size:.85rem;color:var(--dim)}
+  .viewer-msg strong{color:var(--gb)}
+
+  .footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--dim);letter-spacing:1px;border-top:1px solid var(--bdr);margin-top:2rem}
+  .footer span{color:var(--gd)}
+
+  @media(max-width:600px){
+    .r2{grid-template-columns:1fr!important}
+    .form-act{flex-direction:column}
+    .con{padding:1rem}.hero{padding:1.5rem 1rem 1.2rem}
+    .club-logo{width:60px;height:60px}
+    .tab-btn{padding:.8rem .7rem;font-size:.78rem;letter-spacing:1.5px}
+    .role-bar{padding:.5rem 1rem}
+    .modal{padding:2rem 1.5rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay show" id="auth-modal">
+  <div class="modal">
+    <img src="https://lambtonjaffas.com.au/themes/zimple/assets/images/logo.png" alt="Lambton Jaffas FC" class="modal-logo">
+    <h2>Fines Court</h2>
+    <p>Enter the admin password to add and manage fines, or continue as a viewer.</p>
+    <input type="password" id="pw-input" placeholder="Admin password..." autocomplete="off">
+    <div class="modal-err" id="pw-err"></div>
+    <button class="modal-btn primary" onclick="tryLogin()">Unlock Admin</button>
+    <button class="modal-btn secondary" onclick="enterViewer()">Continue as Viewer</button>
+  </div>
+</div>
+
+<!-- ROLE BAR -->
+<div class="role-bar" id="role-bar" style="display:none">
+  <span style="color:var(--dim);font-family:'Source Sans 3',sans-serif">Logged in as:</span>
+  <span class="role-badge" id="role-badge"></span>
+  <button class="role-switch" id="role-switch" onclick="showAuthModal()"></button>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">
+    <img src="https://lambtonjaffas.com.au/themes/zimple/assets/images/logo.png" alt="Lambton Jaffas FC" class="club-logo">
+    <div class="hero-text" style="text-align:left">
+      <h1>Lambton <span>Jaffas</span></h1>
+      <div class="sub">ZL2 · 2026 Fines Register</div>
+      <div class="motto">Capite Non Captivos — Take No Prisoners</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('list')">Fines List</button>
+  <button class="tab-btn" onclick="switchTab('tracker')">Tracker</button>
+  <button class="tab-btn" onclick="switchTab('flip')">Coin Flip</button>
+</div>
+
+<div id="tab-list" class="tab-panel active"><div class="con" id="fines-list"></div></div>
+
+<div id="tab-tracker" class="tab-panel">
+  <div class="con">
+    <div class="stats">
+      <div class="stat"><div class="stat-v" id="s-total">$0</div><div class="stat-l">Total Fines</div></div>
+      <div class="stat"><div class="stat-v" id="s-count">0</div><div class="stat-l">Infractions</div></div>
+      <div class="stat"><div class="stat-v" id="s-players">0</div><div class="stat-l">Players Fined</div></div>
+    </div>
+
+    <!-- ADMIN: Add fine form -->
+    <div id="admin-form" style="display:none">
+      <div class="sec">Add a Fine<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+      <div class="form-grid r2">
+        <input type="text" id="f-player" placeholder="Player name..." list="pl" autocomplete="off">
+        <datalist id="pl"></datalist>
+        <select id="f-fine"></select>
+      </div>
+      <div class="form-grid r3" style="margin-top:.5rem">
+        <input type="number" id="f-amt" placeholder="$ amt">
+        <input type="text" id="f-comment" placeholder="Add a comment... (optional)">
+      </div>
+      <div class="form-act" style="margin-top:.5rem">
+        <select id="f-game" style="width:auto;min-width:90px;flex:0 0 auto"></select>
+        <button class="btn" onclick="addFine()" style="flex:0 0 auto">+ Add Fine</button>
+      </div>
+
+      <div class="sec">Add a Round<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+      <div class="add-round">
+        <input type="text" id="new-round" placeholder="e.g. Rd 2, Rd 3, Semi Final...">
+        <button class="btn btn-sm" onclick="addRound()">+ Add</button>
+      </div>
+    </div>
+
+    <!-- VIEWER: Message -->
+    <div id="viewer-msg" style="display:none" class="viewer-msg">
+      👀 You're viewing as <strong>read-only</strong>. Only admins can add or remove fines.<br>
+      <button class="role-switch" onclick="showAuthModal()" style="margin-top:.5rem;font-size:.82rem">Unlock admin access</button>
+    </div>
+
+    <div class="sec">Leaderboard<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+    <div class="tags" id="filters"></div>
+    <div id="leaderboard" class="lb"></div>
+
+    <div class="sec" style="margin-top:1.8rem">Fine Log<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+    <div id="fine-log"></div>
+  </div>
+</div>
+
+<div id="tab-flip" class="tab-panel">
+  <div class="con">
+    <div class="coin-wrap">
+      <h3>Double or Nothing</h3>
+      <p>Feeling lucky? Gamble any individual fine on a single coin flip.</p>
+      <div><div class="coin" id="coin" onclick="flipCoin()">$</div></div>
+      <div class="c-res" id="c-res"></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Lambton Jaffas Juniors · Arthur Edden Oval, New Lambton · <span>Up The Jaffas</span></div>
+
+<script>
+// ===== CONFIG =====
+const ADMIN_PW = "jaffas2026";
+const SKEY = "jaffas-zl2-fines-2026-v2";
+const GKEY = "jaffas-zl2-games-2026";
+
+let isAdmin = false;
+let fineLog = [];
+let games = [];
+let filter = "All";
+
+// ===== FINES SCHEDULE =====
+const finesData = [
+  {section:"Pre-Match",items:[
+    {name:"Late to matchday",amount:"$1/min late",value:1,note:"Timed until the first handshake of a teammate/coach."},
+    {name:"Not wearing polo shirt to matchday",amount:"$5",value:5},
+    {name:"Forgetting to bring gear on matchday",amount:"$5/item",value:5,note:"Socks, shinpads or boots each count as separate items."},
+    {name:"Arriving at the wrong venue",amount:"$20",value:20},
+    {name:"Not warming up with the squad",amount:"$5",value:5,note:"Only for those present but opting out of team warm-up."},
+    {name:"Fraternising with the opposition",amount:"$2",value:2,note:"Excessive chatting with opposition players/coaches."},
+  ]},
+  {section:"During the Match",items:[
+    {name:"Yellow card",amount:"$5",value:5},{name:"Red card",amount:"$50",value:50},
+    {name:"Missed sitter",amount:"$3",value:3,note:"Must be unanimous agreement at court."},
+    {name:"Missed penalty",amount:"$5",value:5,note:"Missed or saved — on top of the missed sitter fine."},
+    {name:"Hitting the woodwork",amount:"$2",value:2,note:"Goal or not; includes hitting your own woodwork."},
+    {name:"Error leading to goal",amount:"$5",value:5,note:"Must be unanimous agreement at court."},
+    {name:"Conceding a penalty",amount:"$5",value:5,note:"Regardless of the penalty outcome."},
+    {name:"Terrible shot / pass / touch",amount:"$1",value:1,note:"E.g. shot going for a throw-in. Unanimous agreement."},
+    {name:"Nutmegged during play",amount:"$1",value:1,note:"By opponent or teammate."},
+    {name:"Air swing / turtled header",amount:"$1",value:1},
+    {name:"Foul throw",amount:"$5",value:5},
+    {name:"Dummy spit",amount:"$10",value:10,note:"Must be unanimous agreement at court."},
+  ]},
+  {section:"Post-Match",items:[
+    {name:"Avoiding home ground pack-up",amount:"$5",value:5,note:"Repeat offenders only; unanimous agreement at court."},
+    {name:"Not singing team song post-win",amount:"$3",value:3,note:"All players/coaches on team sheet when song isn't sung."},
+    {name:"Not providing MOTM 321s votes",amount:"$3",value:3,note:"Can message if leaving early; before MOTMs announced."},
+    {name:"Leaving possessions in the sheds",amount:"$2/item",value:2,note:"Socks, shinpads or boots each count as separate items."},
+  ]},
+  {section:"Miscellaneous",items:[
+    {name:"Any other infringement raised at court",amount:"TBD",value:5,note:"Final decision and amount lies with the finesmaster."},
+  ]}
+];
+
+const defaultGames = ["Trial 1","Trial 2","Aus Cup","Rd 1"];
+
+const seed = [
+  {id:1001,player:"Jake Sills",fine:"Late to matchday (60 min)",amount:30,game:"Trial 1",comment:"60 minutes late"},
+  {id:1002,player:"Jack Fisher",fine:"Late to matchday (40 min)",amount:20,game:"Trial 1",comment:"40 minutes late"},
+  {id:1003,player:"Zane Hand",fine:"Forgot towel — used training bibs",amount:10,game:"Trial 1",comment:"Used training bibs to dry himself after a shower because he forgot his towel"},
+  {id:1004,player:"Hayden Burt",fine:"Late to matchday (14 min)",amount:7,game:"Trial 1",comment:"14 minutes late"},
+  {id:1005,player:"James Carathanassis",fine:"Forgot shinpads (x2 items)",amount:5,game:"Trial 1",comment:"Forgot his shinpads — counted as 2 items"},
+  {id:1006,player:"Brent Martin",fine:"Conceding a penalty",amount:2.5,game:"Trial 1",comment:""},
+  {id:1007,player:"Dominic Baker",fine:"Conceding a penalty",amount:2.5,game:"Trial 1",comment:""},
+  {id:1008,player:"Harry Matthews",fine:"Dummy spit",amount:2.5,game:"Trial 1",comment:"\"I can't breathe\""},
+  {id:1009,player:"Jordi van Kemenade",fine:"Dummy spit",amount:2.5,game:"Trial 1",comment:"Massive carry-on for a non-injury"},
+  {id:1010,player:"Zane Hand",fine:"Forgot playing shirt",amount:2.5,game:"Trial 1",comment:"Forgot his playing shirt"},
+  {id:1011,player:"Jayden Wiggins",fine:"Leaving possessions",amount:2,game:"Trial 1",comment:"Left water bottle at training"},
+  {id:1012,player:"Ethan Hutchinson",fine:"Missed sitter",amount:1.5,game:"Trial 1",comment:""},
+  {id:1013,player:"Hayden Jennings",fine:"Missed sitter",amount:1.5,game:"Trial 1",comment:""},
+  {id:1014,player:"Kyle Chilcott",fine:"Missed sitter",amount:1.5,game:"Trial 1",comment:""},
+  {id:1015,player:"Simon Klobasa",fine:"Hitting the woodwork",amount:1,game:"Trial 1",comment:""},
+  {id:1016,player:"Hayden Burt",fine:"Terrible shot",amount:0.5,game:"Trial 1",comment:""},
+  {id:1017,player:"James Carathanassis",fine:"Terrible shot",amount:0.5,game:"Trial 1",comment:""},
+  {id:2001,player:"Kyle Chilcott",fine:"Late to matchday (30 min)",amount:15,game:"Trial 2",comment:"30 minutes late"},
+  {id:2002,player:"Riley Stackman",fine:"Late to matchday (26 min)",amount:13,game:"Trial 2",comment:"26 minutes late"},
+  {id:2003,player:"James Barnes",fine:"Fraternising with the opposition",amount:8.5,game:"Trial 2",comment:"Flirting with Georgia's 17-year-old sister"},
+  {id:2004,player:"Kyle Chilcott",fine:"Dummy spit",amount:5,game:"Trial 2",comment:""},
+  {id:2005,player:"Tim Chen",fine:"Forgot socks (x2 items)",amount:5,game:"Trial 2",comment:"Forgot his socks — counted as 2 items"},
+  {id:2006,player:"Dominic Baker",fine:"Error leading to goal",amount:2.5,game:"Trial 2",comment:""},
+  {id:2007,player:"Brock Torrance",fine:"Missed sitter",amount:1.5,game:"Trial 2",comment:""},
+  {id:2008,player:"Riley Stackman",fine:"Missed sitter",amount:1.5,game:"Trial 2",comment:""},
+  {id:2009,player:"Simon Klobasa",fine:"Missed sitter",amount:1.5,game:"Trial 2",comment:""},
+  {id:2010,player:"Jake Sills",fine:"Miscellaneous",amount:0.5,game:"Trial 2",comment:"Applauding Zane shooting from halfway"},
+  {id:2011,player:"Josh Garside",fine:"Miscellaneous",amount:0.5,game:"Trial 2",comment:"Says \"I'm not gonna score\" — proceeds to score in the 1st minute"},
+  {id:2012,player:"Zane Hand",fine:"Terrible shot",amount:0.5,game:"Trial 2",comment:"Terrible shot from halfway"},
+  {id:3001,player:"Blake Barnes-Riddell",fine:"Hitting the woodwork",amount:2,game:"Aus Cup",comment:""},
+  {id:3002,player:"Jordi van Kemenade",fine:"Hitting the woodwork",amount:2,game:"Aus Cup",comment:""},
+  {id:3003,player:"Hayden Jennings",fine:"Missed sitter",amount:3,game:"Aus Cup",comment:""},
+  {id:3004,player:"Blake Harrison",fine:"Missed sitter",amount:3,game:"Aus Cup",comment:""},
+  {id:3005,player:"James Barnes",fine:"Terrible shot",amount:1,game:"Aus Cup",comment:""},
+  {id:3006,player:"Ollie Hendriks",fine:"Terrible shot",amount:1,game:"Aus Cup",comment:""},
+  {id:3007,player:"Hayden Burt",fine:"Terrible touch",amount:1,game:"Aus Cup",comment:"Ball rolling under foot"},
+  {id:3008,player:"Brock Gutherson",fine:"Yellow card",amount:5,game:"Aus Cup",comment:""},
+  {id:3009,player:"Jordi van Kemenade",fine:"Yellow card",amount:5,game:"Aus Cup",comment:""},
+  {id:3010,player:"Dominic Baker",fine:"Yellow card",amount:5,game:"Aus Cup",comment:""},
+  {id:3011,player:"Riley Stackman",fine:"Poor beer organisation",amount:5,game:"Aus Cup",comment:"No beers for 1sts squad after cup win"},
+];
+
+// ===== AUTH =====
+function tryLogin() {
+  const pw = document.getElementById('pw-input').value;
+  if (pw === ADMIN_PW) {
+    isAdmin = true;
+    closeModal();
+    updateRoleUI();
+  } else {
+    document.getElementById('pw-err').textContent = "Wrong password. Try again.";
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+function enterViewer() { isAdmin = false; closeModal(); updateRoleUI(); }
+function closeModal() {
+  const m = document.getElementById('auth-modal');
+  m.classList.remove('show');
+  setTimeout(() => m.classList.add('hide'), 300);
+}
+function showAuthModal() {
+  const m = document.getElementById('auth-modal');
+  m.classList.remove('hide');
+  setTimeout(() => m.classList.add('show'), 10);
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-err').textContent = '';
+}
+function updateRoleUI() {
+  document.getElementById('role-bar').style.display = 'flex';
+  const badge = document.getElementById('role-badge');
+  badge.textContent = isAdmin ? 'Admin' : 'Viewer';
+  badge.className = 'role-badge ' + (isAdmin ? 'admin' : 'viewer');
+  document.getElementById('role-switch').textContent = isAdmin ? 'Lock' : 'Unlock admin';
+  document.getElementById('role-switch').onclick = isAdmin ? () => { isAdmin = false; updateRoleUI(); } : showAuthModal;
+  document.getElementById('admin-form').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('viewer-msg').style.display = isAdmin ? 'none' : 'block';
+  renderTracker();
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
+// ===== STORAGE =====
+async function loadData() {
+  try {
+    const r = await window.storage.get(SKEY, true);
+    const d = r ? JSON.parse(r.value) : null;
+    fineLog = (d && d.fines && d.fines.length > 0) ? d.fines : [...seed];
+  } catch { fineLog = [...seed]; }
+
+  try {
+    const gr = await window.storage.get(GKEY, true);
+    const gd = gr ? JSON.parse(gr.value) : null;
+    games = (gd && gd.games) ? gd.games : [...defaultGames];
+  } catch { games = [...defaultGames]; }
+
+  // Seed save
+  if (fineLog.length === seed.length && fineLog[0]?.id === seed[0]?.id) {
+    try { await window.storage.set(SKEY, JSON.stringify({fines:fineLog}), true); } catch {}
+  }
+  if (games.length === defaultGames.length) {
+    try { await window.storage.set(GKEY, JSON.stringify({games}), true); } catch {}
+  }
+  renderAll();
+}
+async function saveData() {
+  try { await window.storage.set(SKEY, JSON.stringify({fines:fineLog}), true); } catch {}
+}
+async function saveGames() {
+  try { await window.storage.set(GKEY, JSON.stringify({games}), true); } catch {}
+}
+
+// ===== FINES LIST =====
+function renderFinesList() {
+  const c = document.getElementById('fines-list');
+  let h = '';
+  finesData.forEach(sec => {
+    h += `<div class="sec">${sec.section}<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>`;
+    sec.items.forEach(f => {
+      h += `<div class="f-row"><div><div class="f-name">${f.name}</div>${f.note?`<div class="f-note">${f.note}</div>`:''}</div><div class="f-amt">${f.amount}</div></div>`;
+    });
+  });
+  h += `<div style="text-align:center;padding:1.5rem 0;margin-top:1rem;border-top:1px solid rgba(212,168,67,0.12);font-size:.85rem;color:#8A8580">Individual fines can be gambled on <strong style="color:#F1C40F">ONE</strong> double-or-nothing coin flip</div>`;
+  c.innerHTML = h;
+}
+
+// ===== SELECTS =====
+function populateSelects() {
+  const sel = document.getElementById('f-fine');
+  let h = '<option value="">Select a fine...</option>';
+  finesData.forEach(sec => {
+    h += `<optgroup label="${sec.section}">`;
+    sec.items.forEach((f,i) => { h += `<option value="${sec.section}|${i}">${f.name} (${f.amount})</option>`; });
+    h += '</optgroup>';
+  });
+  sel.innerHTML = h;
+  renderGameSelect();
+}
+function renderGameSelect() {
+  const gs = document.getElementById('f-game');
+  gs.innerHTML = games.map(g => `<option value="${g}">${g}</option>`).join('');
+  gs.value = games[games.length - 1];
+}
+
+// ===== ADD FINE =====
+function addFine() {
+  if (!isAdmin) return;
+  const player = document.getElementById('f-player').value.trim();
+  const selVal = document.getElementById('f-fine').value;
+  const custAmt = document.getElementById('f-amt').value;
+  const comment = document.getElementById('f-comment').value.trim();
+  const game = document.getElementById('f-game').value;
+  if (!player || !selVal) return;
+  const [secName, idx] = selVal.split('|');
+  const sec = finesData.find(s => s.section === secName);
+  const fine = sec ? sec.items[parseInt(idx)] : null;
+  if (!fine) return;
+  const amount = custAmt ? parseFloat(custAmt) : fine.value;
+  fineLog.unshift({id:Date.now(), player, fine:fine.name, amount, game, comment});
+  document.getElementById('f-player').value = '';
+  document.getElementById('f-fine').selectedIndex = 0;
+  document.getElementById('f-amt').value = '';
+  document.getElementById('f-comment').value = '';
+  saveData(); renderTracker();
+}
+function removeFine(id) {
+  if (!isAdmin) return;
+  fineLog = fineLog.filter(f => f.id !== id);
+  saveData(); renderTracker();
+}
+
+// ===== ADD ROUND =====
+function addRound() {
+  if (!isAdmin) return;
+  const input = document.getElementById('new-round');
+  const name = input.value.trim();
+  if (!name || games.includes(name)) return;
+  games.push(name);
+  input.value = '';
+  saveGames(); renderGameSelect(); renderTracker();
+}
+
+// ===== RENDER TRACKER =====
+function renderTracker() {
+  const fil = filter === "All" ? fineLog : fineLog.filter(f => f.game === filter);
+  const total = fil.reduce((s,f) => s + f.amount, 0);
+  const players = [...new Set(fil.map(f => f.player))];
+  document.getElementById('s-total').textContent = '$' + total;
+  document.getElementById('s-count').textContent = fil.length;
+  document.getElementById('s-players').textContent = players.length;
+
+  const allP = [...new Set(fineLog.map(f => f.player))];
+  document.getElementById('pl').innerHTML = allP.map(p => `<option value="${p}">`).join('');
+
+  // Filters
+  const allG = ["All", ...new Set(fineLog.map(f => f.game))];
+  document.getElementById('filters').innerHTML = allG.map(g =>
+    `<button class="tag${g===filter?' on':''}" onclick="setFilter('${g}')">${g}</button>`
+  ).join('');
+
+  // Leaderboard
+  const lb = {};
+  fil.forEach(f => { if(!lb[f.player]) lb[f.player]={total:0,count:0}; lb[f.player].total+=f.amount; lb[f.player].count++; });
+  const sorted = Object.entries(lb).sort((a,b) => b[1].total - a[1].total);
+  const lbEl = document.getElementById('leaderboard');
+  if (!sorted.length) {
+    lbEl.innerHTML = `<div class="empty"><div class="ico">🏆</div><p>No fines recorded yet.</p></div>`;
+  } else {
+    lbEl.innerHTML = sorted.map(([name,data],i) =>
+      `<div class="lb-i"><div class="lb-r">${i+1}</div><div class="lb-n">${name}</div><div class="lb-c">${data.count} fine${data.count!==1?'s':''}</div><div class="lb-t">$${data.total}</div></div>`
+    ).join('');
+  }
+
+  // Log
+  const grouped = {};
+  fil.forEach(f => { if(!grouped[f.game]) grouped[f.game]=[]; grouped[f.game].push(f); });
+  const logEl = document.getElementById('fine-log');
+  if (!fil.length) {
+    logEl.innerHTML = `<div class="empty"><p>No fines to show.</p></div>`;
+  } else {
+    let h = '';
+    for (const [game, entries] of Object.entries(grouped)) {
+      h += `<div class="log-gh">${game}</div>`;
+      entries.forEach(f => {
+        h += `<div class="log-e">
+          <div>
+            <span class="log-p">${f.player}</span>
+            <span class="log-f"> — ${f.fine}</span>
+            ${f.comment ? `<div class="log-cmt">💬 ${f.comment}</div>` : ''}
+          </div>
+          <div class="log-a">$${f.amount}</div>
+          ${isAdmin ? `<button class="log-x" onclick="removeFine(${f.id})" title="Remove">✕</button>` : '<span></span>'}
+        </div>`;
+      });
+    }
+    logEl.innerHTML = h;
+  }
+}
+
+function setFilter(g) { filter = g; renderTracker(); }
+
+// ===== COIN FLIP =====
+function flipCoin() {
+  const coin = document.getElementById('coin'), res = document.getElementById('c-res');
+  coin.classList.remove('flip'); res.textContent = ''; res.className = 'c-res';
+  void coin.offsetWidth; coin.classList.add('flip');
+  setTimeout(() => {
+    const win = Math.random() < 0.5;
+    res.textContent = win ? '🎉 CLEARED! Fine wiped!' : '💀 DOUBLED! Pay up!';
+    res.className = 'c-res ' + (win ? 'win' : 'lose');
+    coin.textContent = win ? '✓' : '✕';
+    setTimeout(() => { coin.textContent = '$'; }, 2000);
+  }, 800);
+}
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement.id === 'f-comment') addFine();
+});
+
+// ===== INIT =====
+function renderAll() { renderFinesList(); populateSelects(); renderTracker(); }
+loadData();
+</script>
+</body>
+</html>
