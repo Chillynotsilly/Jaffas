@@ -10,8 +10,7 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Source Sans 3',sans-serif;background:var(--blk);color:var(--txt);min-height:100vh;overflow-x:hidden}
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity .3s}
-  .modal-overlay.show{opacity:1}
-  .modal-overlay.hide{display:none}
+  .modal-overlay.show{opacity:1}.modal-overlay.hide{display:none}
   .modal{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:2.5rem 2rem;max-width:380px;width:100%;text-align:center}
   .modal h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:2px;color:var(--gb);font-size:1.3rem;margin-bottom:.3rem}
   .modal p{font-size:.85rem;color:var(--dim);margin-bottom:1.5rem;line-height:1.4}
@@ -39,7 +38,7 @@
   .hero-text .sub{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--dim);margin-top:2px}
   .hero-text .motto{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gd);margin-top:4px;font-style:italic}
   .tabs{display:flex;justify-content:center;background:var(--dk);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--bdr)}
-  .tab-btn{font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;padding:.9rem 1.6rem;background:none;border:none;color:var(--dim);cursor:pointer;border-bottom:3px solid transparent;transition:color .2s}
+  .tab-btn{font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;padding:.9rem 1.2rem;background:none;border:none;color:var(--dim);cursor:pointer;border-bottom:3px solid transparent;transition:color .2s}
   .tab-btn:hover{color:var(--txt)}
   .tab-btn.active{color:var(--gb);border-bottom-color:var(--gold)}
   .tab-panel{display:none}.tab-panel.active{display:block}
@@ -56,15 +55,13 @@
   .stat-v{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;color:var(--gb)}
   .stat-l{font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-top:2px}
   .form-grid{display:grid;gap:.5rem;margin-bottom:.5rem}
-  .r2{grid-template-columns:1fr 1fr}
-  .r3{grid-template-columns:100px 1fr}
+  .r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:100px 1fr}
   .form-act{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:stretch}
   input,select{font-family:'Source Sans 3',sans-serif;font-size:.9rem;padding:.65rem .9rem;background:var(--card);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);outline:none;transition:border .2s;width:100%}
   input:focus,select:focus{border-color:var(--gold)}
   select option{background:var(--card);color:var(--txt)}
   .btn{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:.65rem 1.2rem;background:linear-gradient(135deg,var(--gold),var(--gd));color:var(--blk);border:none;border-radius:8px;cursor:pointer;font-size:.85rem;white-space:nowrap;transition:box-shadow .2s}
   .btn:hover{box-shadow:0 4px 16px rgba(212,168,67,0.35)}
-  .btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
   .btn-sm{font-size:.75rem;padding:.45rem .9rem;border-radius:6px}
   .tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1rem}
   .tag{font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:.4rem .9rem;border-radius:20px;border:1px solid var(--bdr);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s}
@@ -105,7 +102,20 @@
   .sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
   .sync-dot.on{background:var(--grn);box-shadow:0 0 6px rgba(92,191,110,0.5)}
   .sync-dot.off{background:var(--red)}
-  .loading-bar{text-align:center;padding:3rem;color:var(--gold);font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:2px}
+
+  /* AUDIT LOG */
+  .audit-e{display:grid;grid-template-columns:auto 1fr auto;gap:.8rem;padding:.7rem 1rem;margin:.15rem 0;border-radius:8px;font-size:.84rem;align-items:start}
+  .audit-e:nth-child(odd){background:rgba(255,255,255,0.015)}
+  .audit-badge{font-family:'Oswald',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:.2rem .6rem;border-radius:10px;white-space:nowrap}
+  .audit-badge.add{background:rgba(92,191,110,0.15);color:var(--grn)}
+  .audit-badge.del{background:rgba(224,90,79,0.15);color:var(--red)}
+  .audit-badge.seed{background:rgba(212,168,67,0.15);color:var(--gold)}
+  .audit-detail{line-height:1.4}
+  .audit-detail .player{font-weight:600}
+  .audit-detail .info{color:var(--dim);font-size:.8rem}
+  .audit-time{font-size:.75rem;color:var(--dim);white-space:nowrap;text-align:right}
+  .audit-filter{margin-bottom:1rem}
+
   .footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--dim);letter-spacing:1px;border-top:1px solid var(--bdr);margin-top:2rem}
   .footer span{color:var(--gd)}
   @media(max-width:600px){
@@ -113,14 +123,15 @@
     .form-act{flex-direction:column}
     .con{padding:1rem}.hero{padding:1.5rem 1rem 1.2rem}
     .club-logo{width:60px;height:60px}
-    .tab-btn{padding:.8rem .7rem;font-size:.78rem;letter-spacing:1.5px}
+    .tab-btn{padding:.8rem .55rem;font-size:.72rem;letter-spacing:1px}
     .role-bar{padding:.5rem 1rem}
+    .audit-e{grid-template-columns:1fr;gap:.3rem}
+    .audit-time{text-align:left}
   }
 </style>
 </head>
 <body>
 
-<!-- AUTH MODAL -->
 <div class="modal-overlay show" id="auth-modal">
   <div class="modal">
     <img src="https://lambtonjaffas.com.au/themes/zimple/assets/images/logo.png" alt="Lambton Jaffas FC" class="modal-logo">
@@ -133,7 +144,6 @@
   </div>
 </div>
 
-<!-- ROLE BAR -->
 <div class="role-bar" id="role-bar" style="display:none">
   <span id="sync-status"><span class="sync-dot on"></span>Live</span>
   <span style="flex:1"></span>
@@ -157,6 +167,7 @@
   <button class="tab-btn active" onclick="switchTab('list')">Fines List</button>
   <button class="tab-btn" onclick="switchTab('tracker')">Tracker</button>
   <button class="tab-btn" onclick="switchTab('flip')">Coin Flip</button>
+  <button class="tab-btn" id="audit-tab-btn" onclick="switchTab('audit')" style="display:none">Audit Log</button>
 </div>
 
 <div id="tab-list" class="tab-panel active"><div class="con" id="fines-list"></div></div>
@@ -213,14 +224,21 @@
   </div>
 </div>
 
+<div id="tab-audit" class="tab-panel">
+  <div class="con">
+    <div class="sec">Audit Log<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+    <p style="font-size:.82rem;color:var(--dim);margin-bottom:1rem">Every fine added or deleted is recorded here with a timestamp. This log cannot be edited or cleared.</p>
+    <div class="tags audit-filter" id="audit-filters"></div>
+    <div id="audit-log"></div>
+  </div>
+</div>
+
 <div class="footer">Lambton Jaffas Juniors · Harry Edwards Oval, New Lambton · <span>Up The Jaffas</span></div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-// ===== FIREBASE CONFIG =====
 firebase.initializeApp({
   apiKey: "AIzaSyCpbyRdfMJ7y11ogB2blzbive_v6jXt8m8",
   authDomain: "jaffas-fines.firebaseapp.com",
@@ -233,16 +251,16 @@ firebase.initializeApp({
 const db = firebase.firestore();
 const finesRef = db.collection("fines");
 const gamesRef = db.collection("config").doc("games");
+const auditRef = db.collection("audit");
 
-// ===== STATE =====
 const ADMIN_PW = "UnluckyJoey1!";
 let isAdmin = false;
 let fineLog = [];
+let auditLog = [];
 let games = ["Trial 1","Trial 2","Aus Cup","Rd 1"];
 let filter = "All";
-let seeded = false;
+let auditFilter = "All";
 
-// ===== FINES SCHEDULE =====
 const finesData = [
   {section:"Pre-Match",items:[
     {name:"Late to matchday",amount:"$1/min late",value:1,note:"Timed until the first handshake of a teammate/coach."},
@@ -320,235 +338,226 @@ const seed = [
 ];
 
 // ===== AUTH =====
-function tryLogin() {
-  if (document.getElementById('pw-input').value === ADMIN_PW) {
-    isAdmin = true; closeModal(); updateRoleUI();
-  } else {
-    document.getElementById('pw-err').textContent = "Wrong password. Try again.";
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
-  }
+function tryLogin(){
+  if(document.getElementById('pw-input').value===ADMIN_PW){isAdmin=true;closeModal();updateRoleUI()}
+  else{document.getElementById('pw-err').textContent="Wrong password. Try again.";document.getElementById('pw-input').value='';document.getElementById('pw-input').focus()}
 }
-function enterViewer() { isAdmin = false; closeModal(); updateRoleUI(); }
-function closeModal() {
-  const m = document.getElementById('auth-modal');
-  m.classList.remove('show');
-  setTimeout(() => m.classList.add('hide'), 300);
-}
-function showAuthModal() {
-  const m = document.getElementById('auth-modal');
-  m.classList.remove('hide');
-  setTimeout(() => m.classList.add('show'), 10);
-  document.getElementById('pw-input').value = '';
-  document.getElementById('pw-err').textContent = '';
-}
-function updateRoleUI() {
-  document.getElementById('role-bar').style.display = 'flex';
-  const badge = document.getElementById('role-badge');
-  badge.textContent = isAdmin ? 'Admin' : 'Viewer';
-  badge.className = 'role-badge ' + (isAdmin ? 'admin' : 'viewer');
-  const sw = document.getElementById('role-switch');
-  sw.textContent = isAdmin ? 'Lock' : 'Unlock admin';
-  sw.onclick = isAdmin ? () => { isAdmin = false; updateRoleUI(); } : showAuthModal;
-  document.getElementById('admin-form').style.display = isAdmin ? 'block' : 'none';
-  document.getElementById('viewer-msg').style.display = isAdmin ? 'none' : 'block';
+function enterViewer(){isAdmin=false;closeModal();updateRoleUI()}
+function closeModal(){const m=document.getElementById('auth-modal');m.classList.remove('show');setTimeout(()=>m.classList.add('hide'),300)}
+function showAuthModal(){const m=document.getElementById('auth-modal');m.classList.remove('hide');setTimeout(()=>m.classList.add('show'),10);document.getElementById('pw-input').value='';document.getElementById('pw-err').textContent=''}
+function updateRoleUI(){
+  document.getElementById('role-bar').style.display='flex';
+  const badge=document.getElementById('role-badge');
+  badge.textContent=isAdmin?'Admin':'Viewer';
+  badge.className='role-badge '+(isAdmin?'admin':'viewer');
+  const sw=document.getElementById('role-switch');
+  sw.textContent=isAdmin?'Lock':'Unlock admin';
+  sw.onclick=isAdmin?()=>{isAdmin=false;updateRoleUI()}:showAuthModal;
+  document.getElementById('admin-form').style.display=isAdmin?'block':'none';
+  document.getElementById('viewer-msg').style.display=isAdmin?'none':'block';
+  document.getElementById('audit-tab-btn').style.display=isAdmin?'':'none';
+  if(!isAdmin&&document.getElementById('tab-audit').classList.contains('active')){switchTab('list')}
   renderTracker();
 }
-document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin()});
 
-// ===== FIREBASE: SEED DATA =====
-async function seedIfEmpty() {
-  const snap = await finesRef.limit(1).get();
-  if (snap.empty) {
-    const batch = db.batch();
-    seed.forEach(f => {
-      const ref = finesRef.doc(String(f.ts));
-      batch.set(ref, { player:f.player, fine:f.fine, amount:f.amount, game:f.game, comment:f.comment, ts:f.ts });
-    });
-    await batch.commit();
-  }
-  // Seed games
-  const gSnap = await gamesRef.get();
-  if (!gSnap.exists) {
-    await gamesRef.set({ list: games });
-  } else {
-    games = gSnap.data().list || games;
-  }
+// ===== AUDIT HELPER =====
+function formatTime(ts){
+  const d=new Date(ts);
+  const day=d.toLocaleDateString('en-AU',{day:'numeric',month:'short'});
+  const time=d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',hour12:true});
+  return `${day}, ${time}`;
 }
 
-// ===== FIREBASE: REAL-TIME LISTENER =====
-function startListening() {
-  finesRef.orderBy("ts","desc").onSnapshot(snap => {
-    fineLog = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderTracker();
-  }, err => {
-    console.error("Firestore listen error:", err);
-    document.getElementById('sync-status').innerHTML = '<span class="sync-dot off"></span>Offline';
-  });
+async function logAudit(action, data){
+  const entry = {
+    action,
+    player: data.player,
+    fine: data.fine,
+    amount: data.amount,
+    game: data.game || '',
+    comment: data.comment || '',
+    ts: Date.now()
+  };
+  await auditRef.add(entry);
+}
 
-  gamesRef.onSnapshot(snap => {
-    if (snap.exists) {
-      games = snap.data().list || games;
-      renderGameSelect();
-    }
+// ===== FIREBASE SEED =====
+async function seedIfEmpty(){
+  const snap=await finesRef.limit(1).get();
+  if(snap.empty){
+    const batch=db.batch();
+    seed.forEach(f=>{
+      const ref=finesRef.doc(String(f.ts));
+      batch.set(ref,{player:f.player,fine:f.fine,amount:f.amount,game:f.game,comment:f.comment,ts:f.ts});
+    });
+    await batch.commit();
+    // Log seed as a single audit entry
+    await auditRef.add({action:'seed',player:'System',fine:'Initial data loaded (40 fines from Trial 1, Trial 2, Aus Cup)',amount:0,game:'',comment:'',ts:Date.now()});
+  }
+  const gSnap=await gamesRef.get();
+  if(!gSnap.exists){await gamesRef.set({list:games})}else{games=gSnap.data().list||games}
+}
+
+// ===== LISTENERS =====
+function startListening(){
+  finesRef.orderBy("ts","desc").onSnapshot(snap=>{
+    fineLog=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderTracker();
+  },err=>{
+    console.error("Firestore error:",err);
+    document.getElementById('sync-status').innerHTML='<span class="sync-dot off"></span>Offline';
+  });
+  gamesRef.onSnapshot(snap=>{if(snap.exists){games=snap.data().list||games;renderGameSelect()}});
+  auditRef.orderBy("ts","desc").onSnapshot(snap=>{
+    auditLog=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderAudit();
   });
 }
 
 // ===== ADD / REMOVE =====
-async function addFine() {
-  if (!isAdmin) return;
-  const player = document.getElementById('f-player').value.trim();
-  const selVal = document.getElementById('f-fine').value;
-  const custAmt = document.getElementById('f-amt').value;
-  const comment = document.getElementById('f-comment').value.trim();
-  const game = document.getElementById('f-game').value;
-  if (!player || !selVal) return;
-  const [secName, idx] = selVal.split('|');
-  const sec = finesData.find(s => s.section === secName);
-  const fine = sec ? sec.items[parseInt(idx)] : null;
-  if (!fine) return;
-  const amount = custAmt ? parseFloat(custAmt) : fine.value;
-  const ts = Date.now();
-  await finesRef.doc(String(ts)).set({ player, fine: fine.name, amount, game, comment, ts });
-  document.getElementById('f-player').value = '';
-  document.getElementById('f-fine').selectedIndex = 0;
-  document.getElementById('f-amt').value = '';
-  document.getElementById('f-comment').value = '';
+async function addFine(){
+  if(!isAdmin)return;
+  const player=document.getElementById('f-player').value.trim();
+  const selVal=document.getElementById('f-fine').value;
+  const custAmt=document.getElementById('f-amt').value;
+  const comment=document.getElementById('f-comment').value.trim();
+  const game=document.getElementById('f-game').value;
+  if(!player||!selVal)return;
+  const[secName,idx]=selVal.split('|');
+  const sec=finesData.find(s=>s.section===secName);
+  const fine=sec?sec.items[parseInt(idx)]:null;
+  if(!fine)return;
+  const amount=custAmt?parseFloat(custAmt):fine.value;
+  const ts=Date.now();
+  await finesRef.doc(String(ts)).set({player,fine:fine.name,amount,game,comment,ts});
+  await logAudit('add',{player,fine:fine.name,amount,game,comment});
+  document.getElementById('f-player').value='';
+  document.getElementById('f-fine').selectedIndex=0;
+  document.getElementById('f-amt').value='';
+  document.getElementById('f-comment').value='';
 }
 
-async function removeFine(id) {
-  if (!isAdmin) return;
+async function removeFine(id){
+  if(!isAdmin)return;
+  // Find the fine details before deleting for audit
+  const fineToRemove=fineLog.find(f=>f.id===String(id)||f.id===id);
   await finesRef.doc(String(id)).delete();
+  if(fineToRemove){
+    await logAudit('delete',{player:fineToRemove.player,fine:fineToRemove.fine,amount:fineToRemove.amount,game:fineToRemove.game,comment:fineToRemove.comment});
+  }
 }
 
-async function addRound() {
-  if (!isAdmin) return;
-  const input = document.getElementById('new-round');
-  const name = input.value.trim();
-  if (!name || games.includes(name)) return;
-  games.push(name);
-  input.value = '';
-  await gamesRef.set({ list: games });
+async function addRound(){
+  if(!isAdmin)return;
+  const input=document.getElementById('new-round');
+  const name=input.value.trim();
+  if(!name||games.includes(name))return;
+  games.push(name);input.value='';
+  await gamesRef.set({list:games});
 }
 
 // ===== RENDER =====
-function renderFinesList() {
-  const c = document.getElementById('fines-list');
-  let h = '';
-  finesData.forEach(sec => {
-    h += `<div class="sec">${sec.section}<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>`;
-    sec.items.forEach(f => {
-      h += `<div class="f-row"><div><div class="f-name">${f.name}</div>${f.note?`<div class="f-note">${f.note}</div>`:''}</div><div class="f-amt">${f.amount}</div></div>`;
-    });
+function renderFinesList(){
+  const c=document.getElementById('fines-list');let h='';
+  finesData.forEach(sec=>{
+    h+=`<div class="sec">${sec.section}<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>`;
+    sec.items.forEach(f=>{h+=`<div class="f-row"><div><div class="f-name">${f.name}</div>${f.note?`<div class="f-note">${f.note}</div>`:''}</div><div class="f-amt">${f.amount}</div></div>`});
   });
-  h += `<div style="text-align:center;padding:1.5rem 0;margin-top:1rem;border-top:1px solid rgba(212,168,67,0.12);font-size:.85rem;color:#8A8580">Individual fines can be gambled on <strong style="color:#F1C40F">ONE</strong> double-or-nothing coin flip</div>`;
-  c.innerHTML = h;
+  h+=`<div style="text-align:center;padding:1.5rem 0;margin-top:1rem;border-top:1px solid rgba(212,168,67,0.12);font-size:.85rem;color:#8A8580">Individual fines can be gambled on <strong style="color:#F1C40F">ONE</strong> double-or-nothing coin flip</div>`;
+  c.innerHTML=h;
 }
 
-function populateSelects() {
-  const sel = document.getElementById('f-fine');
-  let h = '<option value="">Select a fine...</option>';
-  finesData.forEach(sec => {
-    h += `<optgroup label="${sec.section}">`;
-    sec.items.forEach((f,i) => { h += `<option value="${sec.section}|${i}">${f.name} (${f.amount})</option>`; });
-    h += '</optgroup>';
-  });
-  sel.innerHTML = h;
-  renderGameSelect();
+function populateSelects(){
+  const sel=document.getElementById('f-fine');let h='<option value="">Select a fine...</option>';
+  finesData.forEach(sec=>{h+=`<optgroup label="${sec.section}">`;sec.items.forEach((f,i)=>{h+=`<option value="${sec.section}|${i}">${f.name} (${f.amount})</option>`});h+='</optgroup>'});
+  sel.innerHTML=h;renderGameSelect();
+}
+function renderGameSelect(){
+  const gs=document.getElementById('f-game');
+  gs.innerHTML=games.map(g=>`<option value="${g}">${g}</option>`).join('');
+  gs.value=games[games.length-1];
 }
 
-function renderGameSelect() {
-  const gs = document.getElementById('f-game');
-  gs.innerHTML = games.map(g => `<option value="${g}">${g}</option>`).join('');
-  gs.value = games[games.length - 1];
+function renderTracker(){
+  const fil=filter==="All"?fineLog:fineLog.filter(f=>f.game===filter);
+  const total=fil.reduce((s,f)=>s+f.amount,0);
+  const players=[...new Set(fil.map(f=>f.player))];
+  document.getElementById('s-total').textContent='$'+total;
+  document.getElementById('s-count').textContent=fil.length;
+  document.getElementById('s-players').textContent=players.length;
+  const allP=[...new Set(fineLog.map(f=>f.player))];
+  document.getElementById('pl').innerHTML=allP.map(p=>`<option value="${p}">`).join('');
+  const allG=["All",...new Set(fineLog.map(f=>f.game))];
+  document.getElementById('filters').innerHTML=allG.map(g=>`<button class="tag${g===filter?' on':''}" onclick="setFilter('${g}')">${g}</button>`).join('');
+
+  const lb={};fil.forEach(f=>{if(!lb[f.player])lb[f.player]={total:0,count:0};lb[f.player].total+=f.amount;lb[f.player].count++});
+  const sorted=Object.entries(lb).sort((a,b)=>b[1].total-a[1].total);
+  const lbEl=document.getElementById('leaderboard');
+  if(!sorted.length){lbEl.innerHTML=`<div class="empty"><div class="ico">🏆</div><p>No fines recorded yet.</p></div>`}
+  else{lbEl.innerHTML=sorted.map(([name,data],i)=>`<div class="lb-i"><div class="lb-r">${i+1}</div><div class="lb-n">${name}</div><div class="lb-c">${data.count} fine${data.count!==1?'s':''}</div><div class="lb-t">$${data.total}</div></div>`).join('')}
+
+  const grouped={};fil.forEach(f=>{if(!grouped[f.game])grouped[f.game]=[];grouped[f.game].push(f)});
+  const logEl=document.getElementById('fine-log');
+  if(!fil.length){logEl.innerHTML=`<div class="empty"><p>No fines to show.</p></div>`}
+  else{let h='';for(const[game,entries]of Object.entries(grouped)){h+=`<div class="log-gh">${game}</div>`;entries.forEach(f=>{h+=`<div class="log-e"><div><span class="log-p">${f.player}</span><span class="log-f"> — ${f.fine}</span>${f.comment?`<div class="log-cmt">💬 ${f.comment}</div>`:''}</div><div class="log-a">$${f.amount}</div>${isAdmin?`<button class="log-x" onclick="removeFine('${f.id}')" title="Remove">✕</button>`:'<span></span>'}</div>`})}logEl.innerHTML=h}
 }
 
-function renderTracker() {
-  const fil = filter === "All" ? fineLog : fineLog.filter(f => f.game === filter);
-  const total = fil.reduce((s,f) => s + f.amount, 0);
-  const players = [...new Set(fil.map(f => f.player))];
-  document.getElementById('s-total').textContent = '$' + total;
-  document.getElementById('s-count').textContent = fil.length;
-  document.getElementById('s-players').textContent = players.length;
+function renderAudit(){
+  const fil=auditFilter==="All"?auditLog:auditLog.filter(a=>a.action===auditFilter);
 
-  const allP = [...new Set(fineLog.map(f => f.player))];
-  document.getElementById('pl').innerHTML = allP.map(p => `<option value="${p}">`).join('');
-
-  const allG = ["All", ...new Set(fineLog.map(f => f.game))];
-  document.getElementById('filters').innerHTML = allG.map(g =>
-    `<button class="tag${g===filter?' on':''}" onclick="setFilter('${g}')">${g}</button>`
+  // Filters
+  const types=["All","add","delete","seed"];
+  document.getElementById('audit-filters').innerHTML=types.map(t=>
+    `<button class="tag${t===auditFilter?' on':''}" onclick="setAuditFilter('${t}')">${t==='All'?'All':t==='add'?'Added':t==='delete'?'Deleted':'Seeded'}</button>`
   ).join('');
 
-  const lb = {};
-  fil.forEach(f => { if(!lb[f.player]) lb[f.player]={total:0,count:0}; lb[f.player].total+=f.amount; lb[f.player].count++; });
-  const sorted = Object.entries(lb).sort((a,b) => b[1].total - a[1].total);
-  const lbEl = document.getElementById('leaderboard');
-  if (!sorted.length) {
-    lbEl.innerHTML = `<div class="empty"><div class="ico">🏆</div><p>No fines recorded yet.</p></div>`;
-  } else {
-    lbEl.innerHTML = sorted.map(([name,data],i) =>
-      `<div class="lb-i"><div class="lb-r">${i+1}</div><div class="lb-n">${name}</div><div class="lb-c">${data.count} fine${data.count!==1?'s':''}</div><div class="lb-t">$${data.total}</div></div>`
-    ).join('');
-  }
+  const el=document.getElementById('audit-log');
+  if(!fil.length){el.innerHTML=`<div class="empty"><p>No audit entries yet.</p></div>`;return}
 
-  const grouped = {};
-  fil.forEach(f => { if(!grouped[f.game]) grouped[f.game]=[]; grouped[f.game].push(f); });
-  const logEl = document.getElementById('fine-log');
-  if (!fil.length) {
-    logEl.innerHTML = `<div class="empty"><p>No fines to show.</p></div>`;
-  } else {
-    let h = '';
-    for (const [game, entries] of Object.entries(grouped)) {
-      h += `<div class="log-gh">${game}</div>`;
-      entries.forEach(f => {
-        h += `<div class="log-e">
-          <div>
-            <span class="log-p">${f.player}</span>
-            <span class="log-f"> — ${f.fine}</span>
-            ${f.comment ? `<div class="log-cmt">💬 ${f.comment}</div>` : ''}
-          </div>
-          <div class="log-a">$${f.amount}</div>
-          ${isAdmin ? `<button class="log-x" onclick="removeFine('${f.id}')" title="Remove">✕</button>` : '<span></span>'}
-        </div>`;
-      });
-    }
-    logEl.innerHTML = h;
-  }
+  el.innerHTML=fil.map(a=>{
+    const badge=a.action==='add'?'add':a.action==='delete'?'del':'seed';
+    const label=a.action==='add'?'Added':a.action==='delete'?'Deleted':'Seeded';
+    const icon=a.action==='add'?'➕':a.action==='delete'?'🗑️':'📦';
+    return `<div class="audit-e">
+      <span class="audit-badge ${badge}">${icon} ${label}</span>
+      <div class="audit-detail">
+        <span class="player">${a.player}</span>
+        ${a.fine?` — <span class="info">${a.fine}</span>`:''}
+        ${a.amount?` <span class="info">($${a.amount})</span>`:''}
+        ${a.game?` <span class="info">· ${a.game}</span>`:''}
+      </div>
+      <div class="audit-time">${formatTime(a.ts)}</div>
+    </div>`;
+  }).join('');
 }
 
-function setFilter(g) { filter = g; renderTracker(); }
+function setFilter(g){filter=g;renderTracker()}
+function setAuditFilter(g){auditFilter=g;renderAudit()}
 
-function flipCoin() {
-  const coin = document.getElementById('coin'), res = document.getElementById('c-res');
-  coin.classList.remove('flip'); res.textContent = ''; res.className = 'c-res';
-  void coin.offsetWidth; coin.classList.add('flip');
-  setTimeout(() => {
-    const win = Math.random() < 0.5;
-    res.textContent = win ? '🎉 CLEARED! Fine wiped!' : '💀 DOUBLED! Pay up!';
-    res.className = 'c-res ' + (win ? 'win' : 'lose');
-    coin.textContent = win ? '✓' : '✕';
-    setTimeout(() => { coin.textContent = '$'; }, 2000);
-  }, 800);
+function flipCoin(){
+  const coin=document.getElementById('coin'),res=document.getElementById('c-res');
+  coin.classList.remove('flip');res.textContent='';res.className='c-res';
+  void coin.offsetWidth;coin.classList.add('flip');
+  setTimeout(()=>{
+    const win=Math.random()<0.5;
+    res.textContent=win?'🎉 CLEARED! Fine wiped!':'💀 DOUBLED! Pay up!';
+    res.className='c-res '+(win?'win':'lose');
+    coin.textContent=win?'✓':'✕';
+    setTimeout(()=>{coin.textContent='$'},2000);
+  },800);
 }
 
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.activeElement.id === 'f-comment') addFine();
-});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='f-comment')addFine()});
 
-// ===== INIT =====
-async function init() {
-  renderFinesList();
-  populateSelects();
-  await seedIfEmpty();
-  startListening();
-}
+async function init(){renderFinesList();populateSelects();await seedIfEmpty();startListening()}
 init();
 </script>
 </body>
