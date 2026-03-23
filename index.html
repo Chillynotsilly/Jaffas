@@ -117,6 +117,16 @@
   .audit-filter{margin-bottom:1rem}
 
   .footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--dim);letter-spacing:1px;border-top:1px solid var(--bdr);margin-top:2rem}
+
+  /* FINE TYPE TALLY */
+  .tally{margin-top:.5rem}
+  .tally-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:.7rem;padding:.6rem 1rem;margin:.15rem 0;border-radius:8px;font-size:.88rem}
+  .tally-row:nth-child(odd){background:rgba(255,255,255,0.015)}
+  .tally-name{font-weight:600;font-size:.9rem}
+  .tally-count{font-size:.8rem;color:var(--dim)}
+  .tally-total{font-family:'Oswald',sans-serif;font-weight:700;font-size:1rem;color:var(--gb);text-align:right}
+  .tally-bar{height:4px;background:var(--bdr);border-radius:2px;margin-top:4px;overflow:hidden}
+  .tally-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gb));border-radius:2px;transition:width .3s}
   .footer span{color:var(--gd)}
   @media(max-width:600px){
     .r2{grid-template-columns:1fr!important}
@@ -207,6 +217,8 @@
     <div class="sec">Leaderboard<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
     <div class="tags" id="filters"></div>
     <div id="leaderboard" class="lb"></div>
+    <div class="sec" style="margin-top:1.8rem">Fine Type Breakdown<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+    <div id="fine-tally" class="tally"></div>
     <div class="sec" style="margin-top:1.8rem">Fine Log<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
     <div id="fine-log"></div>
   </div>
@@ -526,6 +538,36 @@ function renderTracker(){
   else{lbEl.innerHTML=sorted.map(([name,data],i)=>`<div class="lb-i"><div class="lb-r">${i+1}</div><div class="lb-n">${name}</div><div class="lb-c">${data.count} fine${data.count!==1?'s':''}</div><div class="lb-t">$${data.total}</div></div>`).join('')}
 
   const grouped={};fil.forEach(f=>{if(!grouped[f.game])grouped[f.game]=[];grouped[f.game].push(f)});
+
+  // Fine type tally
+  const typeTally={};
+  fil.forEach(f=>{
+    // Normalise fine name — strip specifics like "(60 min)" to group similar fines
+    let type=f.fine.replace(/\s*\(.*?\)\s*/g,'').replace(/\s*—.*$/,'').trim();
+    if(type.toLowerCase().includes('late'))type='Late to matchday';
+    if(type.toLowerCase().includes('forgot')||type.toLowerCase().includes('bring gear'))type='Forgetting gear';
+    if(type.toLowerCase().includes('terrible'))type='Terrible shot / pass / touch';
+    if(type.toLowerCase().includes('woodwork'))type='Hitting the woodwork';
+    if(type.toLowerCase().includes('sitter'))type='Missed sitter';
+    if(type.toLowerCase().includes('yellow'))type='Yellow card';
+    if(type.toLowerCase().includes('dummy')||type.toLowerCase().includes('carry-on'))type='Dummy spit';
+    if(type.toLowerCase().includes('error leading'))type='Error leading to goal';
+    if(type.toLowerCase().includes('conceding'))type='Conceding a penalty';
+    if(type.toLowerCase().includes('leaving')||type.toLowerCase().includes('possessions')||type.toLowerCase().includes('water bottle'))type='Leaving possessions';
+    if(type.toLowerCase().includes('fraternising')||type.toLowerCase().includes('flirting'))type='Fraternising with the opposition';
+    if(!typeTally[type])typeTally[type]={count:0,total:0};
+    typeTally[type].count++;
+    typeTally[type].total+=f.amount;
+  });
+  const sortedTypes=Object.entries(typeTally).sort((a,b)=>b[1].total-a[1].total);
+  const maxTypeTotal=sortedTypes.length?sortedTypes[0][1].total:0;
+  const tallyEl=document.getElementById('fine-tally');
+  if(!sortedTypes.length){tallyEl.innerHTML=`<div class="empty"><p>No fines to tally.</p></div>`}
+  else{tallyEl.innerHTML=sortedTypes.map(([type,data])=>{
+    const pct=maxTypeTotal>0?Math.round((data.total/maxTypeTotal)*100):0;
+    return `<div class="tally-row"><div><div class="tally-name">${type}</div><div class="tally-bar"><div class="tally-bar-fill" style="width:${pct}%"></div></div></div><div class="tally-count">${data.count}×</div><div class="tally-total">$${data.total}</div></div>`
+  }).join('')}
+
   const logEl=document.getElementById('fine-log');
   if(!fil.length){logEl.innerHTML=`<div class="empty"><p>No fines to show.</p></div>`}
   else{let h='';for(const[game,entries]of Object.entries(grouped)){h+=`<div class="log-gh">${game}</div>`;entries.forEach(f=>{h+=`<div class="log-e"><div><span class="log-p">${f.player}</span><span class="log-f"> — ${f.fine}</span>${f.comment?`<div class="log-cmt">💬 ${f.comment}</div>`:''}</div><div class="log-a">$${f.amount}</div>${isAdmin?`<button class="log-x" onclick="removeFine('${f.id}')" title="Remove">✕</button>`:'<span></span>'}</div>`})}logEl.innerHTML=h}
