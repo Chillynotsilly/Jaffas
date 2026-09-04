@@ -143,6 +143,34 @@
   .pm-worst{padding:.7rem 1rem;margin:.9rem .5rem 0;background:rgba(212,168,67,0.06);border:1px solid var(--bdr);border-radius:8px;font-size:.8rem;color:var(--dim);line-height:1.4}
   .pm-worst strong{color:var(--gb);font-weight:600}
 
+  /* PAID / PAYMENTS TAB */
+  .bal-row{display:grid;grid-template-columns:1fr auto;gap:.5rem 1rem;align-items:center;padding:.75rem .8rem;border-bottom:1px solid var(--bdr);cursor:pointer;transition:background .15s}
+  .bal-row:hover{background:rgba(212,168,67,0.04)}
+  .bal-row:last-child{border-bottom:none}
+  .bal-n{font-weight:600;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+  .bal-pill{font-family:'Barlow Condensed',sans-serif;font-size:.66rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:.12rem .5rem;border-radius:20px;border:1px solid}
+  .bal-pill.settled{color:#7BC47F;border-color:rgba(123,196,127,.4);background:rgba(123,196,127,.08)}
+  .bal-pill.part{color:var(--gb);border-color:rgba(212,168,67,.4);background:rgba(212,168,67,.08)}
+  .bal-pill.unpaid{color:#C97B7B;border-color:rgba(201,123,123,.4);background:rgba(201,123,123,.08)}
+  .bal-fig{text-align:right;font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--gb);white-space:nowrap}
+  .bal-fig.clear{color:#7BC47F}
+  .bal-sub{grid-column:1/-1;display:flex;align-items:center;gap:.6rem;font-size:.74rem;color:var(--dim)}
+  .bal-bar{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;min-width:60px}
+  .bal-bar-fill{height:100%;background:linear-gradient(90deg,var(--gd),var(--gold));border-radius:3px;transition:width .4s}
+  .bal-bar-fill.done{background:linear-gradient(90deg,#5E9E62,#7BC47F)}
+  .pay-e{display:grid;grid-template-columns:1fr auto auto;gap:.7rem;align-items:start;padding:.6rem .8rem;border-bottom:1px solid var(--bdr);font-size:.88rem}
+  .pay-e:last-child{border-bottom:none}
+  .pay-p{font-weight:600;cursor:pointer;border-bottom:1px dotted rgba(212,168,67,0.3)}
+  .pay-p:hover{color:var(--gb)}
+  .pay-meta{font-size:.74rem;color:var(--dim);margin-top:3px}
+  .pay-a{font-family:'Oswald',sans-serif;font-weight:700;color:#7BC47F;white-space:nowrap}
+  .pm-pay{display:flex;justify-content:space-between;align-items:center;padding:.5rem .5rem;font-size:.85rem;border-radius:8px}
+  .pm-pay:nth-child(odd){background:rgba(255,255,255,0.015)}
+  .pm-pay .amt{font-family:'Oswald',sans-serif;font-weight:700;color:#7BC47F}
+  .pm-bal{margin:1rem .5rem 0;padding:.8rem 1rem;border-radius:8px;text-align:center;font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:1px;text-transform:uppercase}
+  .pm-bal.owing{background:rgba(201,123,123,.08);border:1px solid rgba(201,123,123,.35);color:#D89A9A}
+  .pm-bal.clear{background:rgba(123,196,127,.08);border:1px solid rgba(123,196,127,.35);color:#7BC47F}
+
   .footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--dim);letter-spacing:1px;border-top:1px solid var(--bdr);margin-top:2rem}
 
   /* FINE TYPE TALLY */
@@ -208,6 +236,7 @@
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('list')">Fines List</button>
   <button class="tab-btn" onclick="switchTab('tracker')">Tracker</button>
+  <button class="tab-btn" onclick="switchTab('paid')">Paid</button>
   <button class="tab-btn" onclick="switchTab('flip')">Coin Flip</button>
   <button class="tab-btn" id="audit-tab-btn" onclick="switchTab('audit')" style="display:none">Audit Log</button>
 </div>
@@ -256,6 +285,43 @@
   </div>
 </div>
 
+<div id="tab-paid" class="tab-panel">
+  <div class="con">
+    <div class="stats">
+      <div class="stat"><div class="stat-v" id="p-fined">$0</div><div class="stat-l">Total Fined</div></div>
+      <div class="stat"><div class="stat-v" id="p-paid">$0</div><div class="stat-l">Collected</div></div>
+      <div class="stat"><div class="stat-v" id="p-owing">$0</div><div class="stat-l">Outstanding</div></div>
+    </div>
+    <div id="pay-form" style="display:none">
+      <div class="sec">Record a Payment<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+      <div class="form-grid r2">
+        <input type="text" id="p-player" placeholder="Player name..." list="pl" autocomplete="off">
+        <input type="number" id="p-amt" placeholder="$ amount paid" step="0.01" min="0">
+      </div>
+      <div class="form-grid r3" style="margin-top:.5rem">
+        <select id="p-method" style="width:auto;min-width:110px">
+          <option value="Cash">Cash</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" id="p-note" placeholder="Note... (optional)">
+      </div>
+      <div class="form-act" style="margin-top:.5rem">
+        <button class="btn" onclick="addPayment()" style="flex:0 0 auto">+ Record Payment</button>
+      </div>
+      <p style="font-size:.76rem;color:var(--dim);margin-top:.6rem">Tip: click a player in the balances below to auto-fill their name and what they still owe.</p>
+    </div>
+    <div id="pay-viewer-msg" style="display:none" class="viewer-msg">
+      👀 You're viewing as <strong>read-only</strong>. Only admins can record payments.<br>
+      <button class="role-switch" onclick="showAuthModal()" style="margin-top:.5rem;font-size:.82rem">Unlock admin access</button>
+    </div>
+    <div class="sec">Who Still Owes<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+    <div id="balances" class="lb"></div>
+    <div class="sec" style="margin-top:1.8rem">Payment History<span style="flex:1;height:1px;background:rgba(212,168,67,0.12)"></span></div>
+    <div id="pay-log"></div>
+  </div>
+</div>
+
 <div id="tab-flip" class="tab-panel">
   <div class="con">
     <div class="coin-wrap">
@@ -284,9 +350,9 @@
       <div class="pm-name" id="pm-name"></div>
       <div class="pm-rank" id="pm-rank"></div>
       <div class="pm-stats">
-        <div class="pm-stat"><div class="pm-stat-v" id="pm-total">$0</div><div class="pm-stat-l">Owed</div></div>
-        <div class="pm-stat"><div class="pm-stat-v" id="pm-count">0</div><div class="pm-stat-l">Fines</div></div>
-        <div class="pm-stat"><div class="pm-stat-v" id="pm-avg">$0</div><div class="pm-stat-l">Avg Fine</div></div>
+        <div class="pm-stat"><div class="pm-stat-v" id="pm-total">$0</div><div class="pm-stat-l">Fined</div></div>
+        <div class="pm-stat"><div class="pm-stat-v" id="pm-paid">$0</div><div class="pm-stat-l">Paid</div></div>
+        <div class="pm-stat"><div class="pm-stat-v" id="pm-owing">$0</div><div class="pm-stat-l">Outstanding</div></div>
       </div>
     </div>
     <div class="pm-body" id="pm-body"></div>
@@ -312,6 +378,7 @@ const db = firebase.firestore();
 const finesRef = db.collection("fines");
 const gamesRef = db.collection("config").doc("games");
 const auditRef = db.collection("audit");
+const paymentsRef = db.collection("payments");
 
 const ADMIN_PW_HASH = "8f549a0d4c13d847ec2a9449593b4d3c1a5004350d6576ad2867f1cdb1a83bcf";
 
@@ -344,6 +411,7 @@ function hashPw(pw){
 let isAdmin = false;
 let fineLog = [];
 let auditLog = [];
+let payments = [];
 let games = ["Trial 1","Trial 2","Aus Cup","Rd 1"];
 let filter = "All";
 let auditFilter = "All";
@@ -444,9 +512,12 @@ function updateRoleUI(){
   sw.onclick=isAdmin?()=>{isAdmin=false;updateRoleUI()}:showAuthModal;
   document.getElementById('admin-form').style.display=isAdmin?'block':'none';
   document.getElementById('viewer-msg').style.display=isAdmin?'none':'block';
+  document.getElementById('pay-form').style.display=isAdmin?'block':'none';
+  document.getElementById('pay-viewer-msg').style.display=isAdmin?'none':'block';
   document.getElementById('audit-tab-btn').style.display=isAdmin?'':'none';
   if(!isAdmin&&document.getElementById('tab-audit').classList.contains('active')){switchTab('list')}
   renderTracker();
+  renderPayments();
 }
 document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin()});
 
@@ -532,6 +603,7 @@ function startListening(){
   finesRef.orderBy("ts","desc").onSnapshot(snap=>{
     fineLog=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderTracker();
+    renderPayments();
   },err=>{
     console.error("Firestore error:",err);
     document.getElementById('sync-status').innerHTML='<span class="sync-dot off"></span>Offline';
@@ -541,6 +613,11 @@ function startListening(){
     auditLog=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderAudit();
   });
+  paymentsRef.orderBy("ts","desc").onSnapshot(snap=>{
+    payments=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderPayments();
+    if(openPlayer)renderPlayerModal();
+  },err=>console.error("Payments error:",err));
 }
 
 // ===== ADD / REMOVE =====
@@ -676,27 +753,36 @@ function renderTracker(){
 }
 
 function renderAudit(){
-  const fil=auditFilter==="All"?auditLog:auditLog.filter(a=>a.action===auditFilter);
+  const fil=auditFilter==="All"?auditLog
+    :auditFilter==="payment"?auditLog.filter(a=>String(a.action).startsWith('payment'))
+    :auditLog.filter(a=>a.action===auditFilter);
 
   // Filters
-  const types=["All","add","delete","seed"];
+  const types=["All","add","delete","payment","seed"];
+  const labels={All:'All',add:'Added',delete:'Deleted',payment:'Payments',seed:'Seeded'};
   document.getElementById('audit-filters').innerHTML=types.map(t=>
-    `<button class="tag${t===auditFilter?' on':''}" onclick="setAuditFilter('${t}')">${t==='All'?'All':t==='add'?'Added':t==='delete'?'Deleted':'Seeded'}</button>`
+    `<button class="tag${t===auditFilter?' on':''}" onclick="setAuditFilter('${t}')">${labels[t]}</button>`
   ).join('');
 
   const el=document.getElementById('audit-log');
   if(!fil.length){el.innerHTML=`<div class="empty"><p>No audit entries yet.</p></div>`;return}
 
+  const meta={
+    add:{badge:'add',label:'Added',icon:'➕'},
+    delete:{badge:'del',label:'Deleted',icon:'🗑️'},
+    payment:{badge:'add',label:'Payment',icon:'💵'},
+    'payment-del':{badge:'del',label:'Payment removed',icon:'↩️'},
+    seed:{badge:'seed',label:'Seeded',icon:'📦'}
+  };
+
   el.innerHTML=fil.map(a=>{
-    const badge=a.action==='add'?'add':a.action==='delete'?'del':'seed';
-    const label=a.action==='add'?'Added':a.action==='delete'?'Deleted':'Seeded';
-    const icon=a.action==='add'?'➕':a.action==='delete'?'🗑️':'📦';
+    const m=meta[a.action]||meta.seed;
     return `<div class="audit-e">
-      <span class="audit-badge ${badge}">${icon} ${label}</span>
+      <span class="audit-badge ${m.badge}">${m.icon} ${m.label}</span>
       <div class="audit-detail">
         <span class="player">${a.player}</span>
         ${a.fine?` — <span class="info">${a.fine}</span>`:''}
-        ${a.amount?` <span class="info">($${a.amount})</span>`:''}
+        ${a.amount?` <span class="info">(${fmt(a.amount)})</span>`:''}
         ${a.game?` <span class="info">· ${a.game}</span>`:''}
       </div>
       <div class="audit-time">${formatTime(a.ts)}</div>
@@ -731,13 +817,18 @@ function renderPlayerModal(){
   const rank=order.indexOf(openPlayer)+1;
 
   document.getElementById('pm-name').textContent=openPlayer;
-  document.getElementById('pm-rank').textContent=rank?`Ranked #${rank} of ${order.length}`:'No fines on record';
+  const mineP=payments.filter(p=>p.player===openPlayer).slice().sort((a,b)=>b.ts-a.ts);
+  const paid=mineP.reduce((s,p)=>s+(Number(p.amount)||0),0);
+  const owing=total-paid;
+  document.getElementById('pm-rank').textContent=rank
+    ? `Ranked #${rank} of ${order.length} · ${mine.length} fine${mine.length!==1?'s':''} · ${fmt(total/mine.length)} avg`
+    : 'No fines on record';
   document.getElementById('pm-total').textContent=fmt(total);
-  document.getElementById('pm-count').textContent=mine.length;
-  document.getElementById('pm-avg').textContent=mine.length?fmt(total/mine.length):'$0';
+  document.getElementById('pm-paid').textContent=fmt(paid);
+  document.getElementById('pm-owing').textContent=fmt(Math.max(0,owing));
 
   const body=document.getElementById('pm-body');
-  if(!mine.length){
+  if(!mine.length&&!mineP.length){
     body.innerHTML=`<div class="empty"><div class="ico">😇</div><p>Clean sheet — no fines on record.</p></div>`;
     return;
   }
@@ -764,7 +855,130 @@ function renderPlayerModal(){
   if(worst&&mine.length>1){
     h+=`<div class="pm-worst">Worst habit: <strong>${worst[0]}</strong> — ${fmt(worst[1])} of the damage.</div>`;
   }
+
+  // Payments
+  if(mineP.length){
+    h+=`<div class="pm-gh">Payments<span>${fmt(paid)}</span></div>`;
+    mineP.forEach(p=>{
+      h+=`<div class="pm-pay"><div><div>${p.method||'Payment'}${p.note?` — ${p.note}`:''}</div><div class="pm-cmt" style="font-style:normal">${formatTime(p.ts)}</div></div><div class="amt">+${fmt(p.amount)}</div></div>`;
+    });
+  }
+
+  // Bottom line
+  if(owing<=0.005){
+    h+=`<div class="pm-bal clear">✓ All square${owing<-0.005?` · ${fmt(-owing)} in credit`:''}</div>`;
+  }else{
+    h+=`<div class="pm-bal owing">Still owes ${fmt(owing)}</div>`;
+  }
+
   body.innerHTML=h;
+}
+
+// ===== PAYMENTS =====
+// Payments are recorded per player as a running balance, not tied to individual
+// fines — blokes hand over a lump sum rather than settling line by line.
+function paidBy(name){return payments.filter(p=>p.player===name).reduce((s,p)=>s+(Number(p.amount)||0),0)}
+function finedBy(name){return fineLog.filter(f=>f.player===name).reduce((s,f)=>s+(Number(f.amount)||0),0)}
+
+let addingPayment=false;
+async function addPayment(){
+  if(!isAdmin||addingPayment)return;
+  const player=document.getElementById('p-player').value.trim();
+  const amount=parseFloat(document.getElementById('p-amt').value);
+  const method=document.getElementById('p-method').value;
+  const note=document.getElementById('p-note').value.trim();
+  const err=[];
+  if(!player)err.push('a player name');
+  if(!amount||amount<=0)err.push('an amount');
+  if(err.length){alert('Please enter '+err.join(' and ')+'.');return}
+
+  const ts=Date.now();
+  const id=ts+'-'+Math.random().toString(36).slice(2,8);
+  addingPayment=true;
+  try{
+    await paymentsRef.doc(id).set({player,amount,method,note,ts});
+    await logAudit('payment',{player,fine:`Payment received (${method})`,amount,comment:note});
+    document.getElementById('p-player').value='';
+    document.getElementById('p-amt').value='';
+    document.getElementById('p-note').value='';
+  }catch(e){
+    console.error("Couldn't record payment:",e);
+    alert("Couldn't save that payment — check your connection and try again.");
+  }finally{
+    addingPayment=false;
+  }
+}
+
+async function removePayment(id){
+  if(!isAdmin)return;
+  const p=payments.find(x=>x.id===id);
+  if(!p)return;
+  if(!confirm(`Delete the ${fmt(p.amount)} payment from ${p.player}?`))return;
+  try{
+    await paymentsRef.doc(id).delete();
+    await logAudit('payment-del',{player:p.player,fine:`Payment deleted (${p.method||'—'})`,amount:p.amount,comment:p.note||''});
+  }catch(e){
+    console.error("Couldn't delete payment:",e);
+  }
+}
+
+// Clicking a balance row loads that player into the form with what they still owe
+function prefillPayment(name){
+  if(!isAdmin){showPlayer(name);return}
+  const owing=finedBy(name)-paidBy(name);
+  document.getElementById('p-player').value=name;
+  document.getElementById('p-amt').value=owing>0?Math.round(owing*100)/100:'';
+  document.getElementById('p-amt').focus();
+  document.getElementById('pay-form').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function renderPayments(){
+  const totalFined=fineLog.reduce((s,f)=>s+(Number(f.amount)||0),0);
+  const totalPaid=payments.reduce((s,p)=>s+(Number(p.amount)||0),0);
+  document.getElementById('p-fined').textContent=fmt(totalFined);
+  document.getElementById('p-paid').textContent=fmt(totalPaid);
+  document.getElementById('p-owing').textContent=fmt(Math.max(0,totalFined-totalPaid));
+
+  // Balances — everyone who has been fined or has paid something
+  const names=new Set([...fineLog.map(f=>f.player),...payments.map(p=>p.player)]);
+  const rows=[...names].map(n=>{
+    const fined=finedBy(n),paid=paidBy(n);
+    return {name:n,fined,paid,owing:fined-paid};
+  }).sort((a,b)=>b.owing-a.owing||b.fined-a.fined);
+
+  const balEl=document.getElementById('balances');
+  if(!rows.length){balEl.innerHTML=`<div class="empty"><p>No fines or payments yet.</p></div>`}
+  else{
+    balEl.innerHTML=rows.map(r=>{
+      const pct=r.fined>0?Math.min(100,Math.round((r.paid/r.fined)*100)):(r.paid>0?100:0);
+      const settled=r.owing<=0.005;
+      const cls=settled?'settled':(r.paid>0?'part':'unpaid');
+      const label=settled?'Settled':(r.paid>0?'Part paid':'Unpaid');
+      const credit=r.owing<-0.005?` <span style="color:var(--dim);font-size:.72rem">(${fmt(-r.owing)} in credit)</span>`:'';
+      return `<div class="bal-row" data-player="${escAttr(r.name)}" onclick="prefillPayment(this.dataset.player)" title="${isAdmin?'Record a payment':'View record'}">
+        <div class="bal-n">${r.name} <span class="bal-pill ${cls}">${label}</span></div>
+        <div class="bal-fig ${settled?'clear':''}">${settled?'✓ '+fmt(0):fmt(r.owing)}${credit}</div>
+        <div class="bal-sub">
+          <span>${fmt(r.paid)} of ${fmt(r.fined)}</span>
+          <div class="bal-bar"><div class="bal-bar-fill ${settled?'done':''}" style="width:${pct}%"></div></div>
+          <span>${pct}%</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  const logEl=document.getElementById('pay-log');
+  if(!payments.length){logEl.innerHTML=`<div class="empty"><div class="ico">💸</div><p>No payments recorded yet.</p></div>`}
+  else{
+    logEl.innerHTML=payments.map(p=>`<div class="pay-e">
+      <div>
+        <span class="pay-p" data-player="${escAttr(p.player)}" onclick="event.stopPropagation();showPlayer(this.dataset.player)" title="View record">${p.player}</span>
+        <div class="pay-meta">${p.method||'Payment'} · ${formatTime(p.ts)}${p.note?` · ${p.note}`:''}</div>
+      </div>
+      <div class="pay-a">+${fmt(p.amount)}</div>
+      ${isAdmin?`<button class="log-x" onclick="removePayment('${p.id}')" title="Delete payment">✕</button>`:'<span></span>'}
+    </div>`).join('');
+  }
 }
 
 function setFilter(g){filter=g;renderTracker()}
@@ -792,6 +1006,7 @@ function switchTab(tab){
 
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&document.activeElement.id==='f-comment')addFine();
+  if(e.key==='Enter'&&(document.activeElement.id==='p-note'||document.activeElement.id==='p-amt'))addPayment();
   if(e.key==='Escape'&&openPlayer)closePlayer();
 });
 
